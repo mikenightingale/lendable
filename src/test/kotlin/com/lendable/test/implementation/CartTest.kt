@@ -1,6 +1,5 @@
 package com.lendable.test.implementation
 
-import com.lendable.test.model.IMutableCart
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -9,10 +8,10 @@ private const val USER_ID = 1
 
 
 private const val CART_AS_JSON =
-    "{\"items\":[{\"productSKU\":\"123456789\",\"productName\":\"Cornflakes\",\"shortDescription\":\"Big Box 400g\",\"quantity\":2,\"itemPriceInCents\":235,\"linePrice\":2.35}],\"is2ForOne\":false,\"total\":4.70}"
+    "{\"items\":[{\"productSKU\":\"123456789\",\"productName\":\"Cornflakes\",\"shortDescription\":\"Big Box 400g\",\"quantity\":2,\"itemPriceInCents\":235,\"linePrice\":2.35}],\"is2ForOne\":true,\"total\":2.35}"
 
 private const val CART_TO_STRING =
-    "FinalCart(items=[CartItem(productSKU=123456789, productName=Cornflakes, shortDescription=Big Box 400g, quantity=2, itemPriceInCents=235)], is2ForOne=false, total=4.70)"
+    "FinalCart(items=[CartItem(productSKU=123456789, productName=Cornflakes, shortDescription=Big Box 400g, quantity=2, itemPriceInCents=235)], is2ForOne=true, total=2.35)"
 
 class CartTest {
 
@@ -76,8 +75,8 @@ class CartTest {
     fun shouldApplyTwoForOne() {
         cart.addItem(provideItem(2, sku = "123456789"))
         cart.setTwoForOne()
-        assertThat(cart.items().first().quantity).isEqualTo(2);
-        assertThat(cart.total().toPlainString()).isEqualTo("2.35");
+        assertThat(cart.items().first().quantity).isEqualTo(2)
+        assertThat(cart.total().toPlainString()).isEqualTo("2.35")
     }
 
     @Test
@@ -85,17 +84,17 @@ class CartTest {
         cart.addItem(provideItem(2, sku = "123456789"))
         cart.addItem(provideItem(1, "Coco pops", "234567890"))
         cart.setTwoForOne()
-        assertThat(cart.items().first().quantity).isEqualTo(2);
-        assertThat(cart.items().last().quantity).isEqualTo(1);
-        assertThat(cart.total().toString()).isEqualTo("4.70");
+        assertThat(cart.items().first().quantity).isEqualTo(2)
+        assertThat(cart.items().last().quantity).isEqualTo(1)
+        assertThat(cart.total().toString()).isEqualTo("4.70")
     }
 
     @Test
     fun shouldApplyTwoForOne3Items() {
         cart.addItem(provideItem(3, sku = "123456789"))
         cart.setTwoForOne()
-        assertThat(cart.items().first().quantity).isEqualTo(3);
-        assertThat(cart.total().toPlainString()).isEqualTo("4.70");
+        assertThat(cart.items().first().quantity).isEqualTo(3)
+        assertThat(cart.total().toPlainString()).isEqualTo("4.70")
 
     }
 
@@ -105,7 +104,7 @@ class CartTest {
         cart.addItem(provideItem(2, sku = "123456789"))
         cart.setTwoForOne()
         cart.clearTwoForOne()
-        assertThat(cart.items().first().quantity).isEqualTo(2);
+        assertThat(cart.items().first().quantity).isEqualTo(2)
     }
 
     @Test
@@ -114,8 +113,8 @@ class CartTest {
         cart.addItem(provideItem(1, "Coco pops", "234567890"))
         cart.setTwoForOne()
         cart.clearTwoForOne()
-        assertThat(cart.items().first().quantity).isEqualTo(2);
-        assertThat(cart.items().last().quantity).isEqualTo(1);
+        assertThat(cart.items().first().quantity).isEqualTo(2)
+        assertThat(cart.items().last().quantity).isEqualTo(1)
     }
 
     @Test
@@ -140,7 +139,7 @@ class CartTest {
     fun shouldCalculateTotal() {
         cart.addItem(provideItem(2, sku = "123456789"))
         cart.addItem(provideItem(2, sku = "123456789"))
-        assertThat(cart.total().toPlainString()).isEqualTo("9.40");
+        assertThat(cart.total().toPlainString()).isEqualTo("9.40")
     }
 
     @Test
@@ -152,14 +151,15 @@ class CartTest {
 
         cart.addItem(provideItem(2, sku = "123456789"))
 
-        assertThat(finalCart.total.toPlainString()).isEqualTo("9.40");
-        assertThat(finalCart.items.first().quantity).isEqualTo(4);
+        assertThat(finalCart.total.toPlainString()).isEqualTo("9.40")
+        assertThat(finalCart.items.first().quantity).isEqualTo(4)
         assertThat(finalCart.is2ForOne).isFalse();
     }
 
     @Test
     fun shouldImplementStringHelpers() {
         cart.addItem(provideItem(2, sku = "123456789"))
+        cart.setTwoForOne();
 
         val finalCart = cart.finalCart()
         assertThat(finalCart.toString()).isEqualTo(CART_TO_STRING)
