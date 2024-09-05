@@ -153,13 +153,13 @@ class CartTest {
 
         assertThat(finalCart.total.toPlainString()).isEqualTo("9.40")
         assertThat(finalCart.items.first().quantity).isEqualTo(4)
-        assertThat(finalCart.is2ForOne).isFalse();
+        assertThat(finalCart.is2ForOne).isFalse()
     }
 
     @Test
     fun shouldImplementStringHelpers() {
         cart.addItem(provideItem(2, sku = "123456789"))
-        cart.setTwoForOne();
+        cart.setTwoForOne()
 
         val finalCart = cart.finalCart()
         assertThat(finalCart.toString()).isEqualTo(CART_TO_STRING)
